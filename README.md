@@ -7,6 +7,7 @@ An official code of "Rollout-Guided Token Pruning for Efficient Video Understand
 
 ## Table of Contents
 - [Installation](#installation)
+- [Datsets](#datasets)
 - [Usage](#usage)
 - [Results](#results)
 
@@ -21,6 +22,44 @@ git clone https://github.com/your_username/your_project_name.git
 cd your_project_name
 pip install -r requirements.txt
 ```
+
+## Datasets
+
+We utilize the following datasets for video object detection and action recognition tasks:
+
+1. **Kinetics-400**
+2. **EPIC-KITCHENS**
+3. **ImageNet VID**
+
+### 1. Kinetics-400
+
+The Kinetics-400 dataset comprises approximately 240,000 video clips across 400 human action classes, with each clip lasting around 10 seconds. ([Kinetics Dataset GitHub](https://github.com/cvdfoundation/kinetics-dataset))
+
+Download Instructions:
+  ```bash
+  git clone https://github.com/cvdfoundation/kinetics-dataset.git
+  cd kinetics-dataset
+  python download.py
+  ```
+
+### 2. EPIC-KITCHENS
+
+EPIC-KITCHENS is the largest dataset in first-person (egocentric) vision, capturing daily activities in kitchen environments. It provides a rich collection of video recordings annotated for tasks such as action recognition, object detection, and hand-object interaction. ([EPIC-KITCHENS Official Website](https://epic-kitchens.github.io))
+
+Download Instructions:
+  ```bash
+  git clone https://github.com/epic-kitchens/epic-kitchens-download-scripts.git
+  cd epic-kitchens-download-scripts
+  python download.py
+  ```
+
+### 3. ImageNet VID
+
+The ImageNet VID dataset is designed for video object detection tasks and contains over 1 million annotated video frames for training and over 100,000 frames for validation. The dataset is part of the larger ImageNet challenge and provides high-quality video sequences labeled with object bounding boxes. ([ImageNet Official Website](https://image-net.org/download))
+
+Download Instructions:
+1. Sign up for an ImageNet account at [ImageNet Download Page](http://image-net.org/download-images).
+2. Navigate to the **Object Detection from Video (VID)** section and follow the instructions for downloading.
 
 ## Usage
 ### Training
