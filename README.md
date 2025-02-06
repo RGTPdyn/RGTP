@@ -18,8 +18,8 @@ An official code of "Rollout-Guided Token Pruning for Efficient Video Understand
 Detail the steps required to set up the environment and install necessary dependencies. For example:
 
 ```bash
-git clone https://github.com/your_username/your_project_name.git
-cd your_project_name
+git clone https://github.com/RGTPdyn/RGTP.git
+cd RGTP
 pip install -r requirements.txt
 ```
 
