@@ -69,4 +69,14 @@ python train.py --data_path /path/to/data --epochs 50
 python evaluate.py --model_path /path/to/model --data_path /path/to/data
 
 ## Results
+**Qualitative results on ImageNet VID:**
+![clip_205p2st4_keep400_start21_comp2](https://github.com/user-attachments/assets/22b5c353-be14-488e-8b93-db739f9ccce5)
 
+**Qualitative results on Kinetics-400:**
+![ar_qualitative_clip_270_c](https://github.com/user-attachments/assets/aed148f5-c1fc-419b-9e82-c8421a6e12f1)
+
+**Video object detection on ILSVRC 2015 ImageNet VID:**
+![IV_flops_memory](https://github.com/user-attachments/assets/44228457-3903-4168-90cb-05331c76e1d0)
+
+**Video action recognition on EPIC-Kitchens:**
+![EK_flops_memory](https://github.com/user-attachments/assets/9dbd65cf-8802-476b-b1fd-7b67d09ef8ea)
