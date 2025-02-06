@@ -1,5 +1,5 @@
-# RGTP
-An official code of "Rollout-Guided Token Pruning":
+# Rollout-Guided Token Pruning for Efficient Video Understanding
+An official code of "Rollout-Guided Token Pruning for Efficient Video Understanding" paper:
 <p align="justify"> 
   Vision Transformers have been proven powerful in various vision applications. Yet, their adaptations for video understanding tasks incur large computational costs, limiting their practical deployment on resource-constrained devices. Token pruning can effectively alleviate the processing overhead of underlying attention blocks, but often neglects the iterative processing nature of video models applied frame-by-frame. We propose to prune tokens according to the estimated contribution of their corresponding tokens in previous frames to previous predictions. We leverage attention rollout and token tracking to propagate token importance of previous outputs to current input tokens. Our method is interpretable, requires no training and has negligible memory overhead. We show the efficacy of our method for both video object detection and action recognition using different transformer architectures, achieving up to 65\% reduction in FLOPS on ImageNet VID and 60\% on EPIC-Kitchens with no accuracy degradation.
 </p>
