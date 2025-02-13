@@ -1,0 +1,11 @@
+_defaults:
+  - "_rollout_reset_1in2_frq_8.yml"
+num_workers: 2
+prefetch_factor: 1
+pin_memory: false
+model:
+  spatial_config:
+    rollout_keep_ratio: 0.49
+    rollout_bg_samples_ratio: 0.0
+config_uniq_name: "rollout_reset_1in2_frq_8_keep_049"
+

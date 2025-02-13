@@ -1,0 +1,13 @@
+_defaults:
+  - "_rollout_reset_frq_4_w_offset.yml"
+num_workers: 2
+prefetch_factor: 1
+pin_memory: false
+model:
+  spatial_config:
+    first_drop_pattern: "1in4"
+    rollout_keep_ratio: 0.4
+    rollout_fg_samples_ratio: 0.5
+    rollout_bg_samples_ratio: 0.09
+config_uniq_name: "rollout_reset_frq_4_w_offset_fg_160s05_bg_009"
+

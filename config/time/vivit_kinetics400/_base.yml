@@ -1,0 +1,5 @@
+_defaults:
+  - "configs/models/vivit_b_kinetics400.yml"
+_output: "results/time/vivit_kinetics400/${_name}/"
+vanilla: false
+weights: "weights/vivit_b_kinetics400.pth"

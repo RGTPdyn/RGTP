@@ -1,0 +1,23 @@
+_defaults:
+  - "configs/models/vivit_b_kinetics400.yml"
+
+# The full training dataset is huge (>200k videos) - using max_tars=40 limits
+# the size to about 40k videos.
+max_tars: 40
+model:
+  drop_using_rollout: true
+  spatial_config:
+    token_drop: true
+    first_drop_pattern: "1in2"
+    drop_block_indices: [ 0 ]
+    rollout_head_fusion: "root_mean_squares"
+    rollout_block_indices: [ 0 ]
+    rollout_reset_frq: 8
+    rollout_spatial_interp: true
+    max_local_offset: 1
+    offset_using_patch_embed: true
+    rollout_gilbert_sampling: true
+    first_frame_prune_disable: true
+  spatial_only: true
+vanilla: true
+weights: "weights/vivit_b_kinetics400.pth"
