@@ -1,82 +1,126 @@
-# Rollout-Guided Token Pruning for Efficient Video Understanding
-An official code of "Rollout-Guided Token Pruning for Efficient Video Understanding" paper:
-<p align="justify"> 
-  Vision Transformers have been proven powerful in various vision applications. Yet, their adaptations for video understanding tasks incur large computational costs, limiting their practical deployment on resource-constrained devices. Token pruning can effectively alleviate the processing overhead of underlying attention blocks, but often neglects the iterative processing nature of video models applied frame-by-frame. We propose to prune tokens according to the estimated contribution of their corresponding tokens in previous frames to previous predictions. We leverage attention rollout and token tracking to propagate token importance of previous outputs to current input tokens. Our method is interpretable, requires no training and has negligible memory overhead. We show the efficacy of our method for both video object detection and action recognition using different transformer architectures, achieving up to 65\% reduction in FLOPS on ImageNet VID and 60\% on EPIC-Kitchens with no accuracy degradation.
-</p>
-<img width="1266" alt="image" src="https://github.com/user-attachments/assets/9cecf0b4-9370-40e3-bc51-e66352a2718b" />
 
-## Table of Contents
-- [Installation](#installation)
-- [Datsets](#datasets)
-- [Usage](#usage)
-- [Results](#results)
+## Overview
 
+PyTorch code for our paper "Rollout-Guided Token Pruning for Efficient Video Understanding". 
 
+## Code Structure
+
+Scripts should be run from the repo's base directory.
+
+Many scripts expect a `.yml` configuration file as a command-line argument. These configuration files are in `configs`. The structure of the `configs` folder is set to mirror the structure of the `scripts` folder. For example, to run the `base_672` evaluation for the ViTDet VID model:
+```
+./scripts/evaluate/vitdet_vid.py ./configs/evaluate/vitdet_vid/base_672.yml
+```
+This repository is based on the code of [Eventful Transformers](https://github.com/WISION-Lab/eventful-transformer). We thank the authors for their excellent code and documentation.
 
 ## Installation
 
-Detail the steps required to set up the environment and install necessary dependencies. For example:
+Dependencies are managed using Conda. The environment is defined in `environment.yml`.
 
-```bash
-git clone https://github.com/RGTPdyn/RGTP.git
-cd RGTP
-pip install -r requirements.txt
+To create the environment, run:
+```
+conda env create -f environment.yml
+```
+Then activate the environment with:
+```
+conda activate rgtp
+```
+## Other Setup
+
+Scripts assume that the current working directory is on the Python path. In the Bash shell, run
+```
+export PYTHONPATH="$PYTHONPATH:."
+```
+Or in the Fish shell:
+```
+set -ax PYTHONPATH .
 ```
 
-## Datasets
+## Weights
 
-We utilize the following datasets for video object detection and action recognition tasks:
+Weights for the ViViT action recognition model (on Kinetics-400 and EPIC-Kitchens) are available [here](https://github.com/alibaba-mmai-research/TAdaConv/blob/main/MODEL_ZOO.md). We use the "ViViT Fact. Enc." weights.
 
-1. **Kinetics-400**
-2. **EPIC-KITCHENS**
-3. **ImageNet VID**
+Weights for the ViTDet object detection model (on COCO) are available [here](https://github.com/facebookresearch/detectron2/tree/main/projects/ViTDet). We use the "Cascade Mask R-CNN, ViTDet, ViT-B" weights. Weights on ImageNet VID are available [here](https://drive.google.com/drive/folders/1tNtIOYlCIlzb2d_fCsIbmjgIETd-xzW-) (`frcnn_vitdet_final.pth`).
 
-### 1. Kinetics-400
+The weight names need to be remapped to work with this codebase. To remap the ViViT weights, run:
+```
+./scripts/convert/vivit.py <old_weights> <new_weights> ./configs/convert/vivit_b.txt
+```
+with `<old_weights>` and `<new_weigtht>` replaced by the path of the downloaded weights and the path where the converted weights should be saved, respectively.
 
-The Kinetics-400 dataset comprises approximately 240,000 video clips across 400 human action classes, with each clip lasting around 10 seconds. ([Kinetics Dataset GitHub](https://github.com/cvdfoundation/kinetics-dataset))
+To remap the ViTDet weights, run:
+```
+./scripts/convert/vitdet.py <old_weights> <new_weights> ./configs/convert/vitdet_b.txt
+```
 
-Download Instructions:
-  ```bash
-  git clone https://github.com/cvdfoundation/kinetics-dataset.git
-  cd kinetics-dataset
-  python download.py
-  ```
+Some ViViT evaluation scripts assume a fine-tuned temporal sub-model. Fine-tuned weights can be downloaded [here](https://drive.google.com/drive/folders/rgtb_fint_tuned_vivit).
 
-### 2. EPIC-KITCHENS
+Alternatively, you can run the fine-tuning yourself. To do this, run a `spatial` configuration (to cache the forward pass of the spatial sub-model), followed by a `train` configuration. For example:
+```
+./scripts/spatial/vivit_kinetics400.py ./configs/spatial/vivit_kinetics400/rollout_reset_1in2_frq_8_keep_0215.yml
+```
+then
+```
+./scripts/train/vivit_kinetics400.py tokendrop_rollout_only spatial_cache_suffix=_rollout_reset_1in2_frq_8_keep_0215
+```
+This will produce `weights/vivit_b_kinetics400_rollout_reset_1in2_frq_8_keep_0215.pth`.
 
-EPIC-KITCHENS is the largest dataset in first-person (egocentric) vision, capturing daily activities in kitchen environments. It provides a rich collection of video recordings annotated for tasks such as action recognition, object detection, and hand-object interaction. ([EPIC-KITCHENS Official Website](https://epic-kitchens.github.io))
+## Data
 
-Download Instructions:
-  ```bash
-  git clone https://github.com/epic-kitchens/epic-kitchens-download-scripts.git
-  cd epic-kitchens-download-scripts
-  python download.py
-  ```
+The `datasets` folder defines PyTorch `Dataset` classes for Kinetics-400, VID, and EPIC-Kitchens.
 
-### 3. ImageNet VID
+The Kinetics-400 class will automatically download and prepare the dataset on first use.
 
-The ImageNet VID dataset is designed for video object detection tasks and contains over 1 million annotated video frames for training and over 100,000 frames for validation. The dataset is part of the larger ImageNet challenge and provides high-quality video sequences labeled with object bounding boxes. ([ImageNet Official Website](https://image-net.org/download))
+VID requires a manual download. Download `vid_data.tar` from [here](https://drive.google.com/drive/folders/1tNtIOYlCIlzb2d_fCsIbmjgIETd-xzW-) and place it at `./data/vid/data.tar`. The VID class will take care of unpacking and preparing the data on first use.
 
-Download Instructions:
-1. Sign up for an ImageNet account at [ImageNet Download Page](http://image-net.org/download-images).
-2. Navigate to the **Object Detection from Video (VID)** section and follow the instructions for downloading.
-
-## Usage
-### Training
-python train.py --data_path /path/to/data --epochs 50
-
-### Evaluation
-python evaluate.py --model_path /path/to/model --data_path /path/to/data
+EPIC-Kitchens also requires a manual download. Download the videos from [here](https://drive.google.com/drive/folders/1OKJpgSKR1QnWa2tMMafknLF-CpEaxDbY) and place them in `./data/epic_kitchens/videos`. Download the labels `EPIC_100_train.csv` and `EPIC_100_validation.csv` from [here](https://github.com/epic-kitchens/epic-kitchens-100-annotations) and place them in `./data/epic_kitchens`. The EPICKitchens class will prepare the data on first use.
 
 ## Results
-**Qualitative results on ImageNet VID:**
-![clip_205p2st4_keep400_start21_comp2](https://github.com/user-attachments/assets/22b5c353-be14-488e-8b93-db739f9ccce5)
 
-**Qualitative results on Kinetics-400:**
-![ar_qualitative_clip_270_c](https://github.com/user-attachments/assets/aed148f5-c1fc-419b-9e82-c8421a6e12f1)
+Below are the main results from the paper, including the configurations needed to reproduce them.
 
-**Video object detection on ILSVRC 2015 ImageNet VID:**
-![IV_flops_memory](https://github.com/user-attachments/assets/44228457-3903-4168-90cb-05331c76e1d0)
+### Video OD on ImageNet VID (Size 672)
 
-**Video action recognition on EPIC-Kitchens:**
-![EK_flops_memory](https://github.com/user-attachments/assets/9dbd65cf-8802-476b-b1fd-7b67d09ef8ea)
+| **mAP50(%)** | **GFLOPs**   | **Configuration** |
+| :----------- | :----------- | :---------------- |
+| 82.28        | 174.5        | [baseline](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vitdet_vid/base_672.yml)            |
+| 82.37        | 93.4         | [res672_keep768](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vitdet_vid/rollout_tokenwise_frq8_res672_keep768.yml)            |
+| 82.39        | 72.6         | [res672_keep512](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vitdet_vid/rollout_tokenwise_frq8_res672_keep512.yml)            |
+| 82.38        | 62.1         | [res672_keep384](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vitdet_vid/rollout_tokenwise_frq8_res672_keep384.yml)            |
+| 82.06        | 46.8         | [res672_keep196](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vitdet_vid/rollout_tokenwise_frq8_res672_keep196.yml)            |
+| 80.53        | 36.0         | [res672_keep64](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vitdet_vid/rollout_tokenwise_frq8_res672_keep64.yml)            |
+
+
+### Video OD on ImageNet VID (Size 1024)
+
+| **mAP50(%)** | **GFLOPs**   | **Configuration** |
+| :----------- | :----------- | :---------------- |
+| 82.93        | 467.4        | [baseline](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vitdet_vid/base_1024.yml)            |
+| 83.08        | 288.9        | [res1024_keep2200](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vitdet_vid/rollout_tokenwise_frq8_res1024_keep2200.yml)            |
+| 83.04        | 213.7        | [res1024_keep1400](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vitdet_vid/rollout_tokenwise_frq8_res1024_keep1400.yml)            |
+| 83.04        | 152.4        | [res1024_keep750](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vitdet_vid/rollout_tokenwise_frq8_res1024_keep750.yml)            |
+| 82.68        | 119.1        | [res1024_keep400](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vitdet_vid/rollout_tokenwise_frq8_res1024_keep400.yml)            |
+| 80.03        | 88.8         | [res1024_keep75](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vitdet_vid/rollout_tokenwise_frq8_res1024_keep75.yml)            |
+
+
+### Action Recognition on EPIC-Kitchens
+
+| **Accuracy(%)** | **TFLOPs**  | **Configuration** |
+| :----------- | :------------- | :---------------- |
+| 67.14        | 7.12           | [baseline](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vivit_epic_kitchens/base.yml)            |
+| 68.13        | 5.51           | [fg_300_bg_025](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vivit_epic_kitchens/rollout_reset_frq_4_w_offset_fg_300_bg_025_wo_ft.yml)            |
+| 67.70        | 4.04           | [fg_180_bg_016](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vivit_epic_kitchens/rollout_reset_frq_4_w_offset_fg_180_bg_016.yml)            |
+| 67.40        | 2.97           | [fg_120_bg_005](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vivit_epic_kitchens/rollout_reset_frq_4_w_offset_fg_120_bg_005_wo_ft.yml)            |
+| 66.35        | 2.25           | [fg_160s05_bg_009](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vivit_epic_kitchens/rollout_reset_frq_4_w_offset_fg_160s05_bg_009.yml)            |
+| 64.27        | 1.71           | [fg_96s05_bg_003](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vivit_epic_kitchens/rollout_reset_frq_4_w_offset_fg_96s05_bg_003_wo_ft.yml)            |
+| 63.79        | 1.34           | [fg_28s05_bg_00](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vivit_epic_kitchens/rollout_reset_frq_4_w_offset_fg_28s05_bg_00.yml)            |
+
+### Action Recognition on Kinetics-400
+
+| **Accuracy(%)** | **TFLOPs**  | **Configuration** |
+| :----------- | :------------- | :---------------- |
+| 79.06        | 3.36           | [baseline](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vivit_kinetics400/base.yml)  
+| 78.00        | 1.79           | [keep_049](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vivit_kinetics400/rollout_reset_1in2_frq_8_keep_049.yml)            |
+| 75.93        | 1.01           | [keep_0215](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vivit_kinetics400/rollout_reset_1in2_frq_8_keep_0215.yml.yml)            |
+| 75.50        | 0.61           | [keep_0066](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vivit_kinetics400/rollout_reset_1in2_frq_8_keep_0066.yml)            |
+
