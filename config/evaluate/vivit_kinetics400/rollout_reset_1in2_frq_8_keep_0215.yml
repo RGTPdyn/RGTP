@@ -1,0 +1,9 @@
+_defaults:
+  - "_base.yml"
+  - "_rollout_reset_1in2_frq_8.yml"
+model:
+  spatial_config:
+    rollout_keep_ratio: 0.215
+    rollout_bg_samples_ratio: 0.0
+weights: "weights/vivit_b_kinetics400_rollout_reset_1in2_frq_8_keep_0215.pth"
+

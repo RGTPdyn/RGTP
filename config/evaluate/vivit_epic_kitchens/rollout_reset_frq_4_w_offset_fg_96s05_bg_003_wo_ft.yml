@@ -1,0 +1,11 @@
+_defaults:
+  - "_base.yml"
+  - "_rollout_reset_frq_4_w_offset.yml"
+model:
+  spatial_config:
+    first_drop_pattern: "1in4"
+    rollout_keep_ratio: 0.24
+    rollout_fg_samples_ratio: 0.5
+    rollout_bg_samples_ratio: 0.03
+weights: "weights/vivit_b_epic_kitchens_rollout_reset_frq_4_w_offset_fg_28s05_bg_00.pth"
+

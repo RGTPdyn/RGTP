@@ -1,0 +1,7 @@
+_defaults:
+  - "_base.yml"
+  - "_size_672.yml"
+  - "_rollout_tokenwise_frq8.yml"
+model:
+  backbone_config:
+    rollout_keep_ratio: 0.111

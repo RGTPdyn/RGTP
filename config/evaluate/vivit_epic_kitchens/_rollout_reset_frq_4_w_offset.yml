@@ -1,0 +1,14 @@
+vanilla: true
+model:
+  drop_using_rollout: true
+  spatial_config:
+    token_drop: true
+    drop_block_indices: [0]
+    rollout_head_fusion: "root_mean_squares"
+    rollout_block_indices: [0]
+    rollout_reset_frq: 4
+    rollout_spatial_interp: true
+    max_local_offset: 1
+    offset_using_patch_embed: true
+    first_frame_prune_disable: true
+
