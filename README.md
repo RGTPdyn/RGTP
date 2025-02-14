@@ -143,3 +143,17 @@ The tables below summarize our main results and the configurations to reproduce 
 | 75.50            | 0.61       | [keep_0066](https://github.com/RGTPdyn/RGTP/blob/main/configs/evaluate/vivit_kinetics400/rollout_reset_1in2_frq_8_keep_0066.yml) |
 
 ## License
+This project is licensed under the **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)** license.
+
+You are free to:
+- **Share** – Copy and redistribute the material in any medium or format.
+- **Adapt** – Remix, transform, and build upon the material.
+
+Under the following terms:
+- **Attribution** – You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+- **NonCommercial** – You may not use the material for commercial purposes.
+- **ShareAlike** – If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+
+For more details, see the full license text here:  
+[![CC BY-NC-SA 4.0](https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
