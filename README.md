@@ -73,7 +73,7 @@ Ensure the current directory is on your Python path.
 
 ### Fine-Tuning ViViT
 
-Some evaluation scripts require a fine-tuned temporal sub-model. You can either download pre-fine-tuned weights [here](https://drive.google.com/drive/folders/rgtb_fint_tuned_vivit) or fine-tune manually:
+Some evaluation scripts require a fine-tuned temporal sub-model. You can either download pre-fine-tuned weights [here](https://drive.google.com/drive/folders/1V7mYC5Lc4vdv26vnhs-ZOZgykmJfhHvX) or fine-tune manually:
 
 1. **Cache the spatial sub-model forward pass:**
    ```bash
