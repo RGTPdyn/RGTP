@@ -1,5 +1,7 @@
 # Rollout-Guided Token Pruning for Efficient Video Understanding
 
+![ICIP_fig1_v3-1](https://github.com/user-attachments/assets/369d5fa2-1301-45c1-aa75-0bc5d9b1fcb0)
+
 This repository contains the PyTorch code for our paper **"Rollout-Guided Token Pruning for Efficient Video Understanding"**. It builds on the [Eventful Transformers](https://github.com/WISION-Lab/eventful-transformer) codebase—our thanks to the original authors.
 
 ## Table of Contents
