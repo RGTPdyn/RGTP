@@ -15,7 +15,7 @@ This repository contains the PyTorch code for our paper **"Rollout-Guided Token 
 
 ## Overview
 
-This repository implements efficient video understanding via rollout-guided token pruning. It includes scripts for evaluation, training, spatial caching, and weight conversion.
+This repository implements efficient video understanding via Rollout-Guided Token Pruning. It includes scripts for evaluation, training, spatial caching, and weight conversion.
 
 ## Code Structure
 
