@@ -2,7 +2,13 @@
 
 ![ICIP_fig1_v3-1](https://github.com/RGTPdyn/RGTP/blob/main/ICIP_fig1_v3.png)
 
-This repository contains the PyTorch code for our paper **"Rollout-Guided Token Pruning for Efficient Video Understanding"**. It builds on the [Eventful Transformers](https://github.com/WISION-Lab/eventful-transformer) codebase—our thanks to the original authors.
+An official PyTorch code for our paper **"Rollout-Guided Token Pruning for Efficient Video Understanding"** (ICIP'25):
+
+<p align="justify"> 
+Vision Transformers have been proven powerful in various vision applications. Yet, their adaptations for video understanding tasks incur large computational costs, limiting their practical deployment on resource-constrained devices. Token pruning can effectively alleviate the processing overhead of underlying attention blocks, but often neglects the iterative processing nature of video models applied frame-by-frame. We propose to prune tokens according to the estimated contribution of their corresponding tokens in previous frames to previous predictions. We leverage attention rollout and token tracking to propagate token importance of previous outputs to current input tokens. Our method is interpretable, requires no training and has negligible memory overhead. We show the efficacy of our method for both video object detection and action recognition using different transformer architectures, achieving up to 65\% reduction in FLOPS on ImageNet VID and 60\% on EPIC-Kitchens with no accuracy degradation.
+</p>
+
+It builds on the [Eventful Transformers](https://github.com/WISION-Lab/eventful-transformer) codebase—our thanks to the original authors.
 
 ## Table of Contents
 
